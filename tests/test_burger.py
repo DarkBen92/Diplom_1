@@ -32,12 +32,13 @@ class TestBurger:
     def test_get_price_burger_return_price_burger(self, mock_bun, mock_ingredient):
         burger = Burger()
         burger.bun = mock_bun
-        burger.bun.get_price.return_value = 10.0
-        mock_ingredient.get_price.return_value = 50
+        burger.bun.get_price.return_value = Data.BUN_PRICE
+        mock_ingredient.get_price.return_value = Data.INGREDIENT1_PRICE
         burger.add_ingredient(mock_ingredient)
-        assert burger.get_price() == 70.0
+        expected_price = Data.BUN_PRICE * 2 + Data.INGREDIENT1_PRICE
+        assert burger.get_price() == expected_price
 
-    @patch("praktikum.burger.Burger.get_price", return_value=70.0)
+    @patch("praktikum.burger.Burger.get_price", return_value=Data.BUN_PRICE)
     def test_get_receipt_burger_return_receipt(self, mock_bun, mock_ingredient, mock_second_ingredient):
         burger = Burger()
         burger.bun = mock_bun
@@ -54,7 +55,6 @@ class TestBurger:
             '= filling Курица =\n'
             '(==== Булочка с корицей ====)\n'
             '\n'
-            'Price: 70.0'
+            'Price: 100.0'
         )
         assert burger.get_receipt() == expected
-
